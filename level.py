@@ -32,11 +32,13 @@ class Level:
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout,change_coins)
         self.coin_sound = pygame.mixer.Sound('audio/coin.mp3')
-        self.coin_sound.set_volume(0.2)
+        self.coin_sound.set_volume(0.1)
         self.hit_sound = pygame.mixer.Sound('audio/hit.mp3')
-        self.hit_sound.set_volume(0.2)
+        self.hit_sound.set_volume(0.1)
         self.pop_sound = pygame.mixer.Sound('audio/pop.mp3')
-        self.pop_sound.set_volume(0.2)
+        self.pop_sound.set_volume(0.1)
+        self.death_sound = pygame.mixer.Sound('audio/death.mp3')
+        self.death_sound.set_volume(0.1)
 
         # user interface
         self.change_coins = change_coins
@@ -146,7 +148,7 @@ class Level:
                     player.rect.left = sprite.rect.right
                     player.on_left = True
                     self.current_x = player.rect.left
-                elif player.direction.x > 0:
+                elif player.direction.x > -1:
                     player.rect.right = sprite.rect.left
                     player.on_right = True
                     self.current_x = sprite.rect.right
@@ -208,6 +210,7 @@ class Level:
 
     def check_death(self):
         if self.player.sprite.rect.top > screen_height:
+            self.death_sound.play()
             self.stop_music()
             self.create_overworld(self.current_level,0)
 

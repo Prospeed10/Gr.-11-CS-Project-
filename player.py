@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         self.import_character_assets()
         self.import_run_particles()
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.12
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft = pos)
 
@@ -21,12 +21,12 @@ class Player(pygame.sprite.Sprite):
 
         # player movement
         self.direction = pygame.math.Vector2(0, 0)
-        self.speed = 8
+        self.speed = 3
         self.gravity = 0.8
         self.jump_speed = -16
 
         self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-        self.jump_sound.set_volume(0.5)
+        self.jump_sound.set_volume(0.2)
 
         # player status
         self.status = 'idle'
@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         # Coin management
         self.change_coins = change_coins
         self.invincible = False
-        self.invincibility_duration = 800
+        self.invincibility_duration = 2000
         self.hurt_time = 0
 
     def import_character_assets(self):
@@ -107,10 +107,10 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         self.direction.x = 0
-        if keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.direction.x = 1
             self.facing_right = True
-        elif keys[pygame.K_LEFT]:
+        elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.direction.x = -1
             self.facing_right = False
         else:
@@ -141,7 +141,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_damage(self):
         if not self.invincible:
-            self.change_coins(-10)
+            self.change_coins(-2)
             self.invincible = True
             self.hurt_time = pygame.time.get_ticks()
 
